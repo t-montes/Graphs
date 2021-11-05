@@ -18,9 +18,10 @@ def timer(func):
     return inner
 
 class Graph():
-    def __init__(self, nodes:list, edges:list):
+    def __init__(self, nodes:list, edges:list, adjMatrex: list):
         self.n = nodes
         self.e = edges
+        self.m = adjMatrex
     
     """Dijkstra minimum cost algorithm"""
     @timer
@@ -128,15 +129,18 @@ def loadGraph(path:str, first='A') -> Graph:
                 chr(i) for i in range(ord(first),ord(first)+numbernodes)]
     Edges:list = []
 
+    Matrix: list = []
+
     i:int = -1
     while (i := i+1) < len(lines):
         subline:list = [int(j) for j in lines[i].rstrip().split('\t')]
+        Matrix.append(subline)
         j:int = -1
         while (j := j+1) < len(subline):
             if subline[j] > 0:
                 #Tripla A -> B de costo C
                 Edges.append((Nodes[i],Nodes[j],subline[j]))
-    return Graph(Nodes,Edges)
+    return Graph(Nodes,Edges,Matrix)
 
 if __name__ == "__main__":
     main.main()
