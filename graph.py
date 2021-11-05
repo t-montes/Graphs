@@ -57,14 +57,28 @@ class Graph():
     
     """Floyd Warschall minimum cost algorithm"""
     @timer
-    def floyd_warschall(self,font):
-        ...
-    
-    def all_floyd_warschall(self):
-        mins:list = []
-        for i in self.v:
-            mins.append(self.floyd_warschall(i))
-        return mins
+    def floyd_warschall(self):
+        n = len(self.n)
+        m = [[[0 for x in range(n)] for y in range(n)]for k in range(n+1)]
+        k = 0
+        
+        while k <= n:
+            i = 0
+            while (i < n):
+                j = 0
+                while j<n:
+                    if k == 0:
+                        if self.m[i][j] == -1:
+                            m[k][i][j] = float("Inf")
+                        else:
+                            m[k][i][j] = self.m[i][j]
+                    else:
+                        m[k][i][j] = min(m[k-1][i][j],m[k-1][i][k-1]+m[k-1][k-1][j])
+                    j+=1
+                i+=1
+            k+=1
+        
+        return m[n]
     
     """Depth First Search algorithm"""
     @timer
