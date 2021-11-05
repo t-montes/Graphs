@@ -37,11 +37,21 @@ class Graph():
     """Bellman Ford minimum cost algorithm"""
     @timer
     def bellman_ford(self,font):
-        ...
-        
+        costs:list = [float("Inf")]*len(self.n)
+        matrix:list = self.m
+
+        costs[font] = 0
+
+        for i in range(len(self.n)-1):
+            for edge in self.e:
+                costs[edge[1]] = min(costs[edge[1]],costs[edge[0]]+edge[2])
+        return costs
+
+
+    @timer  
     def all_bellman_ford(self):
         mins:list = []
-        for i in self.v:
+        for i in self.n:
             mins.append(self.bellman_ford(i))
         return mins
     
