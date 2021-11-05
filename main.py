@@ -3,12 +3,12 @@
     Juan Carlos Marin Morales
 """
 
-from graph import loadGraph
+import graph
 
-path:str = "./"
+path:str = "./../distances5.txt"
 
 def main():
-    g = loadGraph(path)
+    g:graph.Graph = graph.loadGraph(path,first=0)
 
 if __name__ == "__main__":
     main()
