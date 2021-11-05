@@ -5,7 +5,7 @@
 
 import graph
 
-path:str = "./../distances5.txt"
+path:str = "Data/distances5.txt"
 
 def main():
     g:graph.Graph = graph.loadGraph(path,first=0)

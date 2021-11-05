@@ -136,7 +136,6 @@ def loadGraph(path:str, first='A') -> Graph:
             if subline[j] > 0:
                 #Tripla A -> B de costo C
                 Edges.append((Nodes[i],Nodes[j],subline[j]))
-
     return Graph(Nodes,Edges)
 
 if __name__ == "__main__":
