@@ -3,6 +3,7 @@
     Juan Carlos Marin Morales
 """
 
+import queue
 from time import process_time as _process_time
 import main
 
@@ -91,8 +92,15 @@ class Graph():
         
     """Breadth First Search algorithm"""
     @timer
-    def bfs(self,kind=1):
-        ...
+    def bfs(self,font):
+        answer = []
+        q = queue.Queue()
+        visited = [False]*len(self.v)
+        q.enqueue(font)
+        
+
+
+        
 
 @timer
 def loadGraph(path:str, first='A') -> Graph:
