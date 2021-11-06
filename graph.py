@@ -19,7 +19,7 @@ def timer(func):
     return inner
 
 class Graph():
-    def __init__(self, vertices:list, edges:list, adjMatrix: list):
+    def __init__(self, vertices:list, edges:dict, adjMatrix: list):
         self.v = vertices
         self.e = edges
         self.m = adjMatrix
@@ -31,10 +31,30 @@ class Graph():
             return self.all_bellman_ford()
         else:
             return self.floyd_warschall()
+    
+    @timer
+    def dfs(self):
+        """Depth First Search algorithm"""
+        ...
+        
+    @timer
+    def bfs(self):
+        """Breadth First Search algorithm"""
+        ...
 
     def dijkstra(self,font):
         """Dijkstra minimum cost algorithm"""
-        ...
+        vset:set = set(self.v)
+        costs:list = []
+        m:set = {font}
+        for i in self.v:
+            costs.append(0 if (i == font) else self.e.get((font,self.v[i]),float("inf")))
+        while m != vset:
+            w:int = min(vset.difference(m), key = lambda e: costs[e])
+            m.add(w)
+            for v in vset.difference(m):
+                costs[v] = min(costs[v], costs[w]+self.e.get((w,v),float("inf")))
+        return costs
     
     @timer
     def all_dijkstra(self):
@@ -50,7 +70,7 @@ class Graph():
 
         for i in range(len(self.v)-1):
             for edge in self.e:
-                costs[edge[1]] = min(costs[edge[1]],costs[edge[0]]+edge[2])
+                costs[edge[1]] = min(costs[edge[1]], costs[edge[0]]+self.e[edge])
         return costs
 
     @timer
@@ -63,18 +83,18 @@ class Graph():
     @timer
     def floyd_warschall(self):
         """Floyd Warschall minimum cost algorithm"""
-        n = len(self.v)
-        m = [[[0 for x in range(n)] for y in range(n)]for k in range(n+1)]
-        k = 0
-        
+        n:int = len(self.v)
+        m:list = [[[0 for x in range(n)] for y in range(n)]for k in range(n+1)]
+
+        k:int = 0
         while k <= n:
-            i = 0
+            i:int = 0
             while (i < n):
-                j = 0
+                j:int = 0
                 while j<n:
                     if k == 0:
                         if self.m[i][j] == -1:
-                            m[k][i][j] = float("Inf")
+                            m[k][i][j] = float("inf")
                         else:
                             m[k][i][j] = self.m[i][j]
                     else:
@@ -101,18 +121,25 @@ class Graph():
 
 
         
+    def __repr__(self):
+        rp:str = f"\n{'*'*20}GRAPH{'*'*20}\n"
+        rp += "Vertices:\n"
+        for i in self.v:
+            rp += f"\t{chr(8226)} {i}\n"
+        rp += "Edges:\n"
+        for i in self.e:
+            rp += f"\t{chr(8226)} {i[0]} -> {i[1]} (cost = {self.e[i]})\n"
+        return rp
 
 @timer
-def loadGraph(path:str, first='A') -> Graph:
+def loadGraph(path:str) -> Graph:
     with open(path,'r') as file:
         lines:list = file.readlines()
     
     numbervertices:int = len(lines)
 
-    Vertices:list = [i for i in range(first,first+numbervertices)] if (type(first) is int) else [
-                chr(i) for i in range(ord(first),ord(first)+numbervertices)]
-    Edges:list = []
-
+    Vertices:list = [i for i in range(numbervertices)]
+    Edges:dict = {}
     Matrix: list = []
 
     i:int = -1
@@ -122,9 +149,10 @@ def loadGraph(path:str, first='A') -> Graph:
         j:int = -1
         while (j := j+1) < len(subline):
             if subline[j] > 0:
-                #Tripla A -> B de costo C
-                Edges.append((Vertices[i],Vertices[j],subline[j]))
-    return Graph(Vertices,Edges, Matrix)
+                #{(A -> B) : Costo C}
+                Edges[Vertices[i],Vertices[j]] = subline[j]
+    
+    return Graph(Vertices,Edges,Matrix)
 
 if __name__ == "__main__":
     main.main()
