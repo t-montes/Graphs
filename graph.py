@@ -49,7 +49,7 @@ class Graph():
         for i in self.v:
             costs.append(0 if (i == font) else self.e.get((font,self.v[i]),float("inf")))
         while m != vset:
-            w = min(vset.difference(m), key = lambda e: costs[e])
+            w:int = min(vset.difference(m), key = lambda e: costs[e])
             m.add(w)
             for v in vset.difference(m):
                 costs[v] = min(costs[v], costs[w]+self.e.get((w,v),float("inf")))
