@@ -3,6 +3,7 @@
     Juan Carlos Marin Morales
 """
 
+import queue
 from time import process_time as _process_time
 import main
 
@@ -28,6 +29,8 @@ class Graph():
             return self.all_dijkstra()
         elif algorithm == "bellman_ford":
             return self.all_bellman_ford()
+        elif algorithm == "floyd_warschall2":
+            return self.floyd_warschall2()
         else:
             return self.floyd_warschall()
     
@@ -103,7 +106,60 @@ class Graph():
             k+=1
         
         return m[n]
+    
+    def floyd_warschall2(self):
+        n = len(self.v)
+        m = [[0 for x in range(n)] for y in range(n)]
+        k = 0
+        while k <= n:
+            i = 0
+            while i < n:
+                j= 0
+                while j < n:
+                    if k == 0:
+                        if self.m[i][j] == -1:
+                            m[i][j] = float("inf")
+                        else:
+                            m[i][j] = self.m[i][j]
+                    elif k > 0 and i != k and j != k:
+                        m[i][j] = min(m[i][j],m[i][k-1]+m[k-1][j])
+                    j+=1
+                i+=1
+            k+=1
+        return m
 
+    """Depth First Search algorithm"""
+    @timer
+    def dfs(self,kind=1):
+        ...
+        
+    """Breadth First Search algorithm"""
+    @timer
+    def bfs(self):
+        answer = []
+        connectedComponents = []
+        q = queue.Queue()
+        visited = [False]*len(self.v)
+        while len(answer) < len(self.v):
+            font = getFirstNotVisited(visited)
+            q.enqueue(font)
+            visited[font] = True
+            component = []
+            while not (q.isEmpty()):
+                next = q.dequeue()
+                answer.append(next)
+                component.append(next)
+                for v in self.v:
+                    if (self.m[next][v]>0 and not visited[v]):
+                        q.enqueue(v)
+                        visited[v] = True
+            connectedComponents.append(component)
+        return connectedComponents
+
+        
+
+
+        
     def __repr__(self):
         rp:str = f"\n{'*'*20}GRAPH{'*'*20}\n"
         rp += "Vertices:\n"
@@ -114,6 +170,11 @@ class Graph():
             rp += f"\t{chr(8226)} {i[0]} -> {i[1]} (cost = {self.e[i]})\n"
         return rp
 
+def getFirstNotVisited(v: list):
+    i = 0
+    while v[i]:
+        i+=1
+    return i
 @timer
 def loadGraph(path:str) -> Graph:
     with open(path,'r') as file:
