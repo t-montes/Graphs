@@ -10,8 +10,8 @@ def see(mtx:list):
         print("\t",i)
     print("-"*50)
 
-path:str = "Data/distances100.txt"
-numVertices:int = 100
+path:str = "Data/distances1000_202110_costosminimos.txt"
+numVertices:int = 1000
 
 def main():
     print(f"\nCreating Graph with {numVertices} vertices")
@@ -20,10 +20,10 @@ def main():
     #TODO delete this
     cs1 = g.minimum_cost("dijkstra")
     #see(cs1)
-    cs2 = g.minimum_cost("bellman_ford")
-    #see(cs2)
-    cs3 = g.minimum_cost("floyd_warschall")
+    cs2 = g.minimum_cost("floyd_warschall")
     #see(cs3)
+    cs3 = g.minimum_cost("bellman_ford")
+    #see(cs2)
 
 if __name__ == "__main__":
     main()

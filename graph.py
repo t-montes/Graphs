@@ -118,7 +118,9 @@ class Graph():
 def loadGraph(path:str) -> Graph:
     with open(path,'r') as file:
         lines:list = file.readlines()
-    
+
+    if lines[len(lines)-1] == '\n':
+        lines = lines[:-1]
     numbervertices:int = len(lines)
 
     Vertices:list = [i for i in range(numbervertices)]
@@ -127,7 +129,19 @@ def loadGraph(path:str) -> Graph:
 
     i:int = -1
     while (i := i+1) < len(lines):
-        subline:list = [int(j) for j in lines[i].rstrip().split('\t')]
+        subline:list = []
+        for j in lines[i].rstrip().split('\t'):
+            try:
+                subline.append(int(j))
+            except ValueError as e:
+                print(f"Invalid line {i}: {e.args[0]}")
+                subline.append(0)
+        if len(subline) > numbervertices : 
+            print(f"Invalid line {i}: contains {len(subline)} vertices; should be {numbervertices}.")
+            subline = subline[:numbervertices]
+        elif len(subline) < numbervertices :
+            print(f"Invalid line {i}: contains {len(subline)} vertices; should be {numbervertices}")
+            subline = subline + [0]*(numbervertices - len(subline))
         Matrix.append(subline)
         j:int = -1
         while (j := j+1) < len(subline):
