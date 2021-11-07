@@ -20,5 +20,5 @@ class Queue:
         self.queue.insert(0, x)       
 
     def dequeue(self) -> None:
-        self.queue.pop()
+        return self.queue.pop()
 

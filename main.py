@@ -25,8 +25,11 @@ def main():
     cs2 = g.minimum_cost("bellman_ford")
     #see(cs2)
     cs3 = g.minimum_cost("floyd_warschall")
-
-    gDisc.bfs(0)
+    
+    cs4 = g.minimum_cost("floyd_warschall2")
+    print(cs3)
+    print(cs4)
+    print(gDisc.bfs())
     #print(cs1)
     #print(cs2)
     #print(cs3)
