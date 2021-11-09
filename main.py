@@ -11,7 +11,7 @@ def see(mtx:list):
     print("-"*50)
 
 path:str = "Data/distances5.txt"
-numVertices:int = 100
+numVertices:int = 5
 pathDisc: str = "Data/distancesDisconnected.txt"
 
 def main():
