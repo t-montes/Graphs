@@ -96,7 +96,7 @@ class Graph():
             k+=1
         
         return m[n]
-    
+    @timer
     def floyd_warschall2(self):
         n = len(self.v)
         m = [[0 for x in range(n)] for y in range(n)]
