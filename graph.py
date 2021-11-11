@@ -164,6 +164,7 @@ class Graph():
             else:
                 break
         return False, topology
+    
 
     @timer
     def bfs(self):
@@ -188,6 +189,31 @@ class Graph():
                         visited[v] = True
             connectedComponents.append(component)
         return connectedComponents
+
+    def minimumPathDAG(self,s):
+        """
+        Encuentra los caminos de costo minimo desde un vertice fuente s
+        hasta cualquier otro vertice en un grafo dirigido aciclico (DAG)
+
+        Pre: Se asegura que el grafo es aciclico y dirigido.
+        """
+        #Obtener los vertices ordenados en orden topológico
+        tOrder = self.dfs()[1]
+        #Inicializar un arreglo con los costos a cada vertice
+        costs = [float("Inf")]*len(self.v)
+        costs[s] = 0
+        #Tomar cada vertice en orden topologico y relajar sus ejes adyacentes.
+        for v in tOrder:
+            adj = self.adjList[v]#Se sacan los adjacentes asumiendo que se implementa como lista de adjacencias
+            for v2 in adj:
+                cost = self.m[v][v2] #Se saca el costo de ir de un vertice al otro
+                totalCost = cost + costs[v] #Se saca el costo total, sumando los costos a vertices anteriores
+                if totalCost < costs[v2]:
+                    costs[v2] = totalCost #Se relaja
+        #Retorna la lista con los costos a cada vertice
+        return costs
+            
+
     
     def __repr__(self):
         rp:str = f"\n{'*'*20}GRAPH{'*'*20}\n"
