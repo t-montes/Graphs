@@ -30,13 +30,9 @@ def main():
     print(cs3)
     print(cs4)
     print(gDisc.bfs())
-    #print(cs1)
-    #print(cs2)
-    #print(cs3)
 
-    #see(cs3)
-    cs3 = g.minimum_cost("bellman_ford")
-    #see(cs2)
+    cs5 = g.dfs()
+    print(cs5)
 
 if __name__ == "__main__":
     main()

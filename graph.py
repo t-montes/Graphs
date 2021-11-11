@@ -34,16 +34,6 @@ class Graph():
         else:
             return self.floyd_warschall()
     
-    @timer
-    def dfs(self):
-        """Depth First Search algorithm"""
-        ...
-        
-    @timer
-    def bfs(self):
-        """Breadth First Search algorithm"""
-        ...
-
     def dijkstra(self,font):
         """Dijkstra minimum cost algorithm"""
         vset:set = set(self.v)
@@ -128,17 +118,23 @@ class Graph():
             k+=1
         return m
 
-    """Depth First Search algorithm"""
     @timer
-    def dfs(self,kind=1):
+    def dfs(self):
+        """Depth First Search algorithm"""
+        """Returns a duo with:
+        1. A boolean: True if the Graph contains cycle(s)
+        2. Any cycle of the Graph if (1) is True; 
+           A topology order of the Graph if (1) is False
+        """
         ...
-        
-    """Breadth First Search algorithm"""
+
     @timer
     def bfs(self):
-        answer = []
-        connectedComponents = []
-        q = queue.Queue()
+        """Breadth First Search algorithm"""
+        """Precondition: Graph is acyclic and Graph is undirected"""
+        answer:list = []
+        connectedComponents:list = []
+        q:queue.Queue = queue.Queue()
         visited = [False]*len(self.v)
         while len(answer) < len(self.v):
             font = getFirstNotVisited(visited)
@@ -155,11 +151,7 @@ class Graph():
                         visited[v] = True
             connectedComponents.append(component)
         return connectedComponents
-
-        
-
-
-        
+    
     def __repr__(self):
         rp:str = f"\n{'*'*20}GRAPH{'*'*20}\n"
         rp += "Vertices:\n"
@@ -175,6 +167,7 @@ def getFirstNotVisited(v: list):
     while v[i]:
         i+=1
     return i
+
 @timer
 def loadGraph(path:str) -> Graph:
     with open(path,'r') as file:
