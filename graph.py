@@ -108,10 +108,10 @@ class Graph():
                 while j < n:
                     if k == 0:
                         if self.m[i][j] == -1:
-                            m[i][j] = float("inf")
+                            m[i][j] = float("Inf")
                         else:
                             m[i][j] = self.m[i][j]
-                    elif k > 0 and i != k and j != k:
+                    elif k > 0 and i != k-1 and j != k-1:
                         m[i][j] = min(m[i][j],m[i][k-1]+m[k-1][j])
                     j+=1
                 i+=1
