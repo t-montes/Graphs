@@ -56,7 +56,15 @@ def main():
             print("Los componentes conectados son: ")
             print(cc)
         elif opc == 5:
-            pass
+            print("Opción Ejecutada: Comprobar si existe un ciclo y en caso negativo, obtener el orden topológico, mediante DFS")
+            file = input("Ingrese el nombre del archivo que contiene el grafo que desea cargar: ")
+            file = "Data/"+file
+            g: graph.Graph = graph.loadGraph(file)
+            cc = g.dfs()
+            if cc[0]:
+                print("El grafo tiene el ciclo:",cc[1])
+            else:
+                print("El grafo no tiene ciclos.\nUn orden topológico del grafo es:",cc[1])
         elif opc == 6:
             execute = False
         

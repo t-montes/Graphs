@@ -217,9 +217,7 @@ class Graph():
                     costs[v2] = totalCost #Se relaja
         #Retorna la lista con los costos a cada vertice
         return costs
-            
-
-    
+                
     def facebook(self):
         minCosts = self.all_dijkstra()
         for i in minCosts:
