@@ -128,29 +128,34 @@ class Graph():
         """
         indegree:list = [[] for i in range(len(self.v))]
         answer:list = []
+        hed:list = []
         stack:list = []
         visited:list = [False for i in range(len(self.v))]
-        stack.append(0)
-        visited[0] = True
-        while len(stack):
-            next = stack.pop()
-            answer.append(next)
-            hasedges = False
-            for v in self.v:
-                if self.m[next][v] > 0:
-                    hasedges = True
-                    indegree[v].append(next)
-                    if visited[v]:
-                        if v not in stack and v in answer:
-                            # TODO -> Error, la topología posiblemente no sirve, ya que 2 -/> 5 pero 5 -> 2
-                            answer.append(v)
-                            """El grafo tiene un ciclo v -> ... -> v"""
-                            return True, answer#[answer.index(v):]
-                    else:    
-                        stack.append(v)
-                        visited[v] = True
-            if not hasedges:
-                del answer[len(answer)-1]
+        while len(answer) < len(self.v):
+            font = getFirstNotVisited(visited)
+            stack.append(font)
+            visited[font] = True
+            while len(stack):
+                next = stack.pop()
+                answer.append(next)
+                hasedges = False
+                for v in self.v:
+                    if self.m[next][v] > 0:
+                        hasedges = True
+                        indegree[v].append(next)
+                        if not visited[v]:
+                            stack.append(v)
+                            visited[v] = True
+                        elif v in answer and hed[answer.index(v)]:
+                            i = 1
+                            while i < len(answer):
+                                if not self.m[answer[i-1]][answer[i]]>0:
+                                    break
+                                i+=1
+                            else:
+                                answer.append(v)
+                                return True, answer[answer.index(v):]
+                hed.append(hasedges)
         """El grafo no tiene ciclos"""
         topology:list = []
         while True:
@@ -189,6 +194,13 @@ class Graph():
             connectedComponents.append(component)
         return connectedComponents
     
+    def facebook(self):
+        minCosts = self.all_dijkstra()
+        for i in minCosts:
+            if len(i) > 6:
+                return False
+        return True
+
     def __repr__(self):
         rp:str = f"\n{'*'*20}GRAPH{'*'*20}\n"
         rp += "Vertices:\n"

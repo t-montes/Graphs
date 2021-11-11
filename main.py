@@ -35,7 +35,7 @@ def main():
 
     cs5 = g.dfs()
     print(cs5)
-    print(g)
+    #print(g)
 
     cs6 = g2.dfs()
     print(cs6)
