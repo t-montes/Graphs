@@ -108,7 +108,7 @@ class Graph():
                 while j < n:
                     if k == 0:
                         if self.m[i][j] == -1:
-                            m[i][j] = float("Inf")
+                            m[i][j] = float("inf")
                         else:
                             m[i][j] = self.m[i][j]
                     elif k > 0 and i != k-1 and j != k-1:
@@ -126,7 +126,44 @@ class Graph():
         2. Any cycle of the Graph if (1) is True; 
            A topology order of the Graph if (1) is False
         """
-        ...
+        indegree:list = [[] for i in range(len(self.v))]
+        answer:list = []
+        stack:list = []
+        visited:list = [False for i in range(len(self.v))]
+        stack.append(0)
+        visited[0] = True
+        while len(stack):
+            next = stack.pop()
+            answer.append(next)
+            hasedges = False
+            for v in self.v:
+                if self.m[next][v] > 0:
+                    hasedges = True
+                    indegree[v].append(next)
+                    if visited[v]:
+                        if v not in stack and v in answer:
+                            # TODO -> Error, la topología posiblemente no sirve, ya que 2 -/> 5 pero 5 -> 2
+                            answer.append(v)
+                            """El grafo tiene un ciclo v -> ... -> v"""
+                            return True, answer#[answer.index(v):]
+                    else:    
+                        stack.append(v)
+                        visited[v] = True
+            if not hasedges:
+                del answer[len(answer)-1]
+        """El grafo no tiene ciclos"""
+        topology:list = []
+        while True:
+            nextop = indegree.index([])
+            topology.append(nextop)
+            indegree[nextop] = None
+            if any(indegree):
+                for i in indegree:
+                    try: i.remove(nextop)
+                    except: pass
+            else:
+                break
+        return False, topology
 
     @timer
     def bfs(self):
@@ -134,7 +171,7 @@ class Graph():
         """Precondition: Graph is acyclic and Graph is undirected"""
         answer:list = []
         connectedComponents:list = []
-        q:queue.Queue = queue.Queue()
+        q = queue.Queue()
         visited = [False]*len(self.v)
         while len(answer) < len(self.v):
             font = getFirstNotVisited(visited)
