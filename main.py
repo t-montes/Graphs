@@ -5,41 +5,61 @@
 
 import graph
 
-def see(mtx:list):
+def see(mtx):
     for i in mtx:
         print("\t",i)
     print("-"*50)
 
-path:str = "Data/distances5.txt"
-path2:str = "Data/distances5_2.txt"
-numVertices:int = 5
-pathDisc: str = "Data/distancesDisconnected.txt"
+def printMenu():
+    
+    print("1 - Obtener la matriz de costos minimos utilizando Dijkstra")
+    print("2 - Obtener la matriz de costos minimos utilizando Bellman Ford")
+    print("3 - Obtener la matriz de costos minimos utilizando Floy Warschall")
+    print("4 - Utilizar BFS para encontrar los componentes conectados")
+    print("5 - Utilizar DFS Para saber si existe un ciclo en el grafo y obtener orden topologico")
+    print("6 - Salir")
 
 def main():
-    print(f"\nCreating Graph with {numVertices} vertices")
-    g:graph.Graph = graph.loadGraph(path)
-    g2:graph.Graph = graph.loadGraph(path2)
-    gDisc: graph.Graph = graph.loadGraph(pathDisc)
-
-    #TODO delete this
-    cs1 = g.minimum_cost("dijkstra")
-    print(cs1)
-    cs2 = g.minimum_cost("bellman_ford")
-    print(cs2)
-    cs3 = g.minimum_cost("floyd_warschall")
-    
-    cs4 = g.minimum_cost("floyd_warschall2")
-    print(cs3)
-    print(cs4)
-    #print(gDisc.bfs())
-
-    cs5 = g.dfs()
-    print(cs5)
-    #print(g)
-
-    cs6 = g2.dfs()
-    print(cs6)
-    #print(g2)
+    print("Bienvenido a nuestra solucion de la tarea 5 de Dalgo :D\n")
+    execute = True
+    while execute:
+        printMenu()
+        opc = int(input("Seleccione una opcion para continuar: "))
+        if opc == 1:
+            print("Opcion Ejecutada: Matriz de costos minimos usando Dijkstra")
+            file = input("Ingrese el nombre del archivo que contiene el grafo que desea cargar: ")
+            file = "Data/"+file
+            g: graph.Graph = graph.loadGraph(file)
+            print("Se cargó un grafo con "+str(len(g.v))+" vertices y "+ str(len(g.e))+ " ejes.")
+            see(g.all_dijkstra())
+        elif opc == 2:
+            print("Opcion Ejecutada: Matriz de costos minimos usando Bellman Ford")
+            file = input("Ingrese el nombre del archivo que contiene el grafo que desea cargar: ")
+            file = "Data/"+file
+            g: graph.Graph = graph.loadGraph(file)
+            print("Se cargó un grafo con "+str(len(g.v))+" vertices y "+ str(len(g.e))+ " ejes.")
+            see(g.all_bellman_ford())
+        elif opc == 3:
+            print("Opcion Ejecutada: Matriz de costos minimos usando Floyd Warschall")
+            file = input("Ingrese el nombre del archivo que contiene el grafo que desea cargar: ")
+            file = "Data/"+file
+            g: graph.Graph = graph.loadGraph(file)
+            print("Se cargó un grafo con "+str(len(g.v))+" vertices y "+ str(len(g.e))+ " ejes.")
+            see(g.floyd_warschall2())
+        elif opc == 4:
+            print("Opcion Ejecutada: Obtener componentes conectados mediante BFS")
+            file = input("Ingrese el nombre del archivo que contiene el grafo que desea cargar: ")
+            file = "Data/"+file
+            g: graph.Graph = graph.loadGraph(file)
+            print("Se cargó un grafo con "+str(len(g.v))+" vertices y "+ str(len(g.e))+ " ejes.")
+            cc = g.bfs()
+            print("Los componentes conectados son: ")
+            print(cc)
+        elif opc == 5:
+            pass
+        elif opc == 6:
+            execute = False
+        
 
 if __name__ == "__main__":
     main()
